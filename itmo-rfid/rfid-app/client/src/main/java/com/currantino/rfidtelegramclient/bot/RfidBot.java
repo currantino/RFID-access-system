@@ -1,55 +1,50 @@
 package com.currantino.rfidtelegramclient.bot;
 
+import com.currantino.rfidtelegramclient.client.RfidClient;
 import com.currantino.rfidtelegramclient.config.BotConfig;
-import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.UpdatesListener;
-import com.pengrad.telegrambot.model.Message;
-import com.pengrad.telegrambot.request.SendMessage;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
+import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
-@Slf4j
-public class RfidBot extends TelegramBot {
-
+public class RfidBot extends TelegramLongPollingBot {
 
     private final BotConfig botConfig;
+    private final RfidClient rfidClient;
 
     @Autowired
-    public RfidBot(BotConfig botConfig) {
+    public RfidBot(BotConfig botConfig, RfidClient rfidClient) {
         super(botConfig.getToken());
-        System.out.println(botConfig.getToken());
         this.botConfig = botConfig;
+        this.rfidClient = rfidClient;
     }
 
-    @PostConstruct
-    public void start() {
-        setUpdatesListener(
-                updates -> {
-                    updates.stream()
-                            .filter(update -> update.message() != null)
-                            .forEach(update -> {
-                                Message message = update.message();
-                                log.info("Processing message \"{}\" from \"{}\"", message.text(), message.chat().username());
-                                SendMessage response = new SendMessage(update.message().chat().id(),
-                                        """
-                                                        Hello, %s!
-                                                        You just said \"%s\""""
-                                                .formatted(message.chat().username(), message.text()));
-                                execute(response);
-                            });
-                    return UpdatesListener.CONFIRMED_UPDATES_ALL;
-                },
-                exception -> {
-                    sendError();
-                });
+    @Override
+    public void onUpdateReceived(Update update) {
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            String senderUsername = update.getMessage().getChat().getUserName();
+            SendMessage message = new SendMessage();
+            message.setChatId(update.getMessage().getChatId().toString());
+            message.setText(
+                    """
+                            Hello, %s!
+                            You've just said \"%s\"
+                            """.formatted(senderUsername, rfidClient.hello()));
 
+            try {
+                execute(message);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    private void sendError() {
+    @Override
+    public String getBotUsername() {
+        return botConfig.getBotName();
     }
 
 }
