@@ -1,5 +1,6 @@
 package com.currantino.rfidserver.visit.controller;
 
+import com.currantino.rfidserver.visit.dto.CreateVisitDto;
 import com.currantino.rfidserver.visit.dto.VisitDto;
 import com.currantino.rfidserver.visit.service.VisitService;
 import lombok.RequiredArgsConstructor;
@@ -9,9 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.OK;
 
 @Slf4j
 @RestController
@@ -23,15 +21,13 @@ public class VisitController {
 
 
     @PostMapping
-    public ResponseEntity<Void> addVisit(
+    public ResponseEntity<VisitDto> addVisit(
             @RequestBody
-            VisitDto visitDto
+            CreateVisitDto createVisitDto
     ) {
-        log.info("Received rfid: {}", visitDto.rfidUid());
-        if (visitService.addVisit(visitDto)) {
-            return new ResponseEntity<>(OK);
-        }
-        return new ResponseEntity<>(FORBIDDEN);
+        log.info("Received rfid uid: {}", createVisitDto.rfidUid());
+        VisitDto visitDto = visitService.newVisit(createVisitDto);
+        return ResponseEntity.ok(visitDto);
     }
 
 }

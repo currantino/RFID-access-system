@@ -23,6 +23,12 @@ public class Credential {
     private Long id;
     @Column(name = "rfid_uid", nullable = false, unique = true)
     private Long rfidUid;
+    @Column(name = "is_valid")
+    private Boolean valid;
     @OneToOne(mappedBy = "credential")
     private User user;
+
+    public Boolean isValid() {
+        return valid;
+    }
 }

@@ -1,10 +1,22 @@
 package com.currantino.rfidserver.visit.entity;
 
+import com.currantino.rfidserver.credential.entity.Credential;
+import com.currantino.rfidserver.user.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -12,6 +24,9 @@ import java.util.Objects;
 @Table(name = "visit")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +35,14 @@ public class Visit {
 
     @ManyToOne
     @JoinColumn(name = "visitor_id")
-    private com.currantino.rfidserver.user.entity.User visitor;
+    private User visitor;
+    @ManyToOne
+    @JoinColumn(name = "credential_id")
+    private Credential credential;
     @Column(name = "visit_time")
     private LocalDateTime time;
+    @Column(name = "is_passed")
+    private Boolean passed;
 
     @Override
     public boolean equals(Object o) {

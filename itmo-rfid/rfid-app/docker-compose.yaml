@@ -1,0 +1,46 @@
+version: '3.4'
+
+services:
+  rfid-db:
+    container_name: rfid-db-container
+    image: postgres:14-alpine
+    ports:
+      - "6542:5432"
+    user: postgres
+    env_file:
+      - db-variables.env
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "--port 5432", "--username kitty", "--dbname itmo-rfid-db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  rfid-server:
+    container_name: rfid-server-container
+    build: server
+    ports:
+      - "8080:8080"
+    depends_on:
+      rfid-db:
+        condition: service_healthy
+    env_file:
+      - server-variables.env
+    healthcheck:
+      test: "wget -qO- http://localhost:8080/actuator/health/ | grep UP || exit 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  telegram-client:
+    container_name: telegram-client-container
+    build: client
+    ports:
+      - "8081:8081"
+    env_file:
+      - telegram-client-variables.env
+    depends_on:
+      rfid-server:
+        condition: service_healthy
+

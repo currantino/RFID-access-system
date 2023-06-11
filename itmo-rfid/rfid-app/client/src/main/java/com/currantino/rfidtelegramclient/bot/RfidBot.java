@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
 public class RfidBot extends TelegramLongPollingBot {
 
+
     private final BotConfig botConfig;
     private final RfidClient rfidClient;
 

@@ -1,5 +1,6 @@
 package com.currantino.rfidserver.visit.dto;
 
-public record VisitDto(String rfidUid) {
-//todo add door id
+import com.currantino.rfidserver.user.dto.UserVisitDto;
+
+public record VisitDto(Long id, Long rfidUid, UserVisitDto visitor, Boolean passed) {
 }

@@ -25,11 +25,16 @@ public class User {
     @Column(name = "user_id", nullable = false)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @OneToOne()
     private Credential credential;
+    @Column(name = "is_blocked")
+    private Boolean blocked;
     @OneToMany(mappedBy = "id")
     private List<Visit> visits;
 
+    public Boolean isBlocked() {
+        return blocked;
+    }
 }

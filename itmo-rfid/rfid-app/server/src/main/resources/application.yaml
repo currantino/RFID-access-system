@@ -1,39 +1,10 @@
 server:
-  address: localhost
   port: 8080
-
----
 
 spring:
   config:
     activate:
       on-profile: default, prod
-    datasource:
-      driver-class-name: org.h2.Driver
-      generate-unique-name: true
-      username: "sa"
-      password: "sa"
-      url: "jdbc:h2:mem:rfid"
-#  datasource:
-#    password: "kitty"
-#    username: "kitty"
-#    driver-class-username: org.postgresql.Driver
-#    url: "jdbc:postgresql://localhost:5432/rfid-db"
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: test
-
-  datasource:
-    driver-class-name: org.h2.Driver
-    generate-unique-name: true
-    username: "sa"
-    password: "sa"
-    url: "jdbc:h2:mem:rfid"
-
-logging:
-  level:
-    sql: info
+  sql:
+    init:
+      mode: always

@@ -20,9 +20,17 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException("Could not find the requested user!")));
     }
 
+
     public UserDto createUser(CreateUserDto createUserDto) {
         User user = userMapper.toEntity(createUserDto);
         User saved = userRepository.save(user);
         return userMapper.toDto(saved);
+    }
+
+    public UserDto getUserByCredentialRfidUid(Long rfidUid) {
+        User user = userRepository.findUserByCredentialRfidUid(rfidUid)
+                .orElseThrow(() -> new UserNotFoundException("Could not find the owner of card with rfid uid=%d!"
+                        .formatted(rfidUid)));
+        return userMapper.toDto(user);
     }
 }
