@@ -1,6 +1,6 @@
 package com.currantino.rfidserver.visit.dto;
 
-import com.currantino.rfidserver.user.dto.UserVisitDto;
+import com.currantino.rfidserver.visitor.dto.VisitorVisitDto;
 
-public record VisitDto(Long id, Long rfidUid, UserVisitDto visitor, Boolean passed) {
+public record VisitDto(Long id, Long rfidUid, VisitorVisitDto visitor, Boolean passed) {
 }

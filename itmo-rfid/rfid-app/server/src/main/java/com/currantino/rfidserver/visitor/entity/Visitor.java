@@ -1,9 +1,10 @@
-package com.currantino.rfidserver.user.entity;
+package com.currantino.rfidserver.visitor.entity;
 
 import com.currantino.rfidserver.credential.entity.Credential;
 import com.currantino.rfidserver.visit.entity.Visit;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.logging.log4j.util.Strings;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,20 +14,26 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "visitors")
 @Getter
 @Setter
-public class User {
+public class Visitor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "visitor_id")
     private Long id;
-
-    @Column(name = "username", unique = true)
-    private String username;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    @Column(name = "birthday")
+    private LocalDateTime birthday;
+    @Column(name = "email")
+    private String email;
     @OneToOne()
     private Credential credential;
     @Column(name = "is_blocked")
@@ -36,5 +43,9 @@ public class User {
 
     public Boolean isBlocked() {
         return blocked;
+    }
+
+    public String getFullName() {
+        return Strings.join(List.of(firstName, lastName), ' ');
     }
 }

@@ -1,4 +1,4 @@
-package com.currantino.rfidserver.user.dto;
+package com.currantino.rfidserver.visitor.dto;
 
 import javax.validation.constraints.NotEmpty;
 

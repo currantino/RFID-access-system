@@ -1,7 +1,7 @@
 package com.currantino.rfidserver.visit.entity;
 
 import com.currantino.rfidserver.credential.entity.Credential;
-import com.currantino.rfidserver.user.entity.User;
+import com.currantino.rfidserver.visitor.entity.Visitor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "visit")
+@Table(name = "visits")
 @Getter
 @Setter
 @Builder
@@ -30,17 +30,17 @@ import java.util.Objects;
 public class Visit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "visit_id", nullable = false)
+    @Column(name = "visit_id")
     private Long id;
 
+    @Column(name = "visit_datetime")
+    private LocalDateTime visitDatetime;
     @ManyToOne
     @JoinColumn(name = "visitor_id")
-    private User visitor;
+    private Visitor visitor;
     @ManyToOne
     @JoinColumn(name = "credential_id")
     private Credential credential;
-    @Column(name = "visit_time")
-    private LocalDateTime time;
     @Column(name = "is_passed")
     private Boolean passed;
 
@@ -55,5 +55,9 @@ public class Visit {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    public boolean isPassed() {
+        return passed;
     }
 }

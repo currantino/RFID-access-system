@@ -27,6 +27,13 @@ public class VisitController {
     ) {
         log.info("Received rfid uid: {}", createVisitDto.rfidUid());
         VisitDto visitDto = visitService.newVisit(createVisitDto);
+        log.info("""
+                        Rfid uid: {}
+                        owner: {}
+                        PASSED
+                        """,
+                createVisitDto.rfidUid(),
+                visitDto.visitor().fullName());
         return ResponseEntity.ok(visitDto);
     }
 

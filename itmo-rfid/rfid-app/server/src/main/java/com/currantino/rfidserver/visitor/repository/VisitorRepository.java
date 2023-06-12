@@ -1,0 +1,22 @@
+package com.currantino.rfidserver.visitor.repository;
+
+import com.currantino.rfidserver.visitor.entity.Visitor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.Optional;
+
+public interface VisitorRepository extends JpaRepository<Visitor, Long> {
+    @Query(
+            """
+                    SELECT
+                        v
+                    FROM
+                        Visitor v
+                    WHERE
+                        v.credential.rfidUid = :rfidUid
+                    """
+    )
+    Optional<Visitor> findUserByCredentialRfidUid(@Param("rfidUid") Long rfidUid);
+}

@@ -1,6 +1,6 @@
 package com.currantino.rfidserver.credential.entity;
 
-import com.currantino.rfidserver.user.entity.User;
+import com.currantino.rfidserver.visitor.entity.Visitor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,22 +13,22 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "credential")
+@Table(name = "credentials")
 @Getter
 @Setter
 public class Credential {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "credential_id", nullable = false)
+    @Column(name = "credential_id")
     private Long id;
-    @Column(name = "rfid_uid", nullable = false, unique = true)
+    @Column(name = "rfid_uid")
     private Long rfidUid;
-    @Column(name = "is_valid")
-    private Boolean valid;
+    @Column(name = "is_blocked")
+    private Boolean blocked;
     @OneToOne(mappedBy = "credential")
-    private User user;
+    private Visitor visitor;
 
-    public Boolean isValid() {
-        return valid;
+    public Boolean isBlocked() {
+        return blocked;
     }
 }
