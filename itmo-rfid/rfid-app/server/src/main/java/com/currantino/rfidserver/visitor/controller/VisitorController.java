@@ -1,6 +1,6 @@
 package com.currantino.rfidserver.visitor.controller;
 
-import com.currantino.rfidserver.visitor.dto.CreateUserDto;
+import com.currantino.rfidserver.visitor.dto.CreateVisitorDto;
 import com.currantino.rfidserver.visitor.service.VisitorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,18 +13,43 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@RestController
+@RestController("visitorController")
 @RequiredArgsConstructor
-@RequestMapping("/visitors")
-public class UserController {
+@RequestMapping("/api/telegram/v1/visitors")
+public class VisitorController {
     private final VisitorService visitorService;
 
+    @PostMapping
+    public UserDto createUser(
+            @Valid
+            @RequestBody
+            CreateVisitorDto createVisitorDto
+    ) {
+        return visitorService.createUser(createVisitorDto);
+    }
+
     @GetMapping("/{id}")
-    public UserDto getUserById(
+    public UserDto getVisitorById(
             @RequestParam
             Long id
     ) {
-        return visitorService.getUserById(id);
+        return visitorService.getVisitorById(id);
+    }
+
+    @PostMapping("/{email}/block")
+    public UserDto blockVisitor(
+            @PathVariable(name = "email")
+            String email
+    ){
+        return visitorService.blockUser(email);
+    }
+
+    @PostMapping("/{email}/unblock")
+    public UserDto unblockVisitor(
+            @PathVariable(name = "email")
+            String email
+    ){
+        return visitorService.unblockUser(email);
     }
 
     @GetMapping("/rfid/{rfidUid}")
@@ -33,15 +58,6 @@ public class UserController {
             Long rfidUid
     ) {
         return visitorService.getUserByCredentialRfidUid(rfidUid);
-    }
-
-    @PostMapping
-    public UserDto createUser(
-            @Valid
-            @RequestBody
-            CreateUserDto createUserDto
-    ) {
-        return visitorService.createUser(createUserDto);
     }
 
 

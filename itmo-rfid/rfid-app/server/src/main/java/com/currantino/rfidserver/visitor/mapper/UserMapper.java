@@ -2,7 +2,7 @@ package com.currantino.rfidserver.visitor.mapper;
 
 import com.currantino.rfidserver.credential.mapper.CredentialMapper;
 import com.currantino.rfidserver.visitor.controller.UserDto;
-import com.currantino.rfidserver.visitor.dto.CreateUserDto;
+import com.currantino.rfidserver.visitor.dto.CreateVisitorDto;
 import com.currantino.rfidserver.visitor.entity.Visitor;
 import com.currantino.rfidserver.visit.VisitMapper;
 import org.mapstruct.Mapper;
@@ -13,6 +13,6 @@ public interface UserMapper {
 
     UserDto toDto(Visitor visitor);
 
-    Visitor toEntity(CreateUserDto createUserDto);
+    Visitor toEntity(CreateVisitorDto createVisitorDto);
 
 }

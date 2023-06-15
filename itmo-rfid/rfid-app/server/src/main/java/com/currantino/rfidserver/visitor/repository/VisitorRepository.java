@@ -19,4 +19,12 @@ public interface VisitorRepository extends JpaRepository<Visitor, Long> {
                     """
     )
     Optional<Visitor> findUserByCredentialRfidUid(@Param("rfidUid") Long rfidUid);
+
+    @Query("SELECT " +
+            "   v " +
+            "FROM " +
+            "   Visitor v " +
+            "WHERE " +
+            "   v.email = :email")
+    Optional<Visitor> findByEmail(@Param("email") String email);
 }

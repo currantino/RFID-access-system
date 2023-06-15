@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User management page</title>
+</head>
+<body>
+<h1>User Management</h1>
+<form action="#" method="post">
+    <input type="submit" name="action" value="Add User">
+    <input type="submit" name="action" value="Block User">
+    <input type="submit" name="action" value="Unblock User">
+</form>
+
+<div th:if="${param.action == 'Add User'}">
+    <form action="#" method="post">
+        <label>
+            <input type="email" name="email" placeholder="Enter email" required>
+        </label>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+</body>
+</html>

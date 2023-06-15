@@ -24,12 +24,8 @@ public class RfidClient {
                 .build();
     }
 
-    public String hello() {
 
-        ResponseEntity<Object> statServerResponse;
-        return rest.exchange(RequestEntity.get("/hello").build(), String.class)
-                .getBody();
+    public void blockUser() {
+        String path = "/";
     }
-
-
 }

@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 public class RfidTelegramClientApplication {
 
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(RfidTelegramClientApplication.class);
+        SpringApplication.run(RfidTelegramClientApplication.class);
     }
 
 }
