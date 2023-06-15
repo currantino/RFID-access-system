@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import api from "./api/axiosConfig";
+import React, {useEffect, useState} from "react";
+import {Route, Routes} from 'react-router-dom';
+import Layout from "./components/Layout";
+import Home from "./components/home/Home"
+import Visitors from "./components/Visitors";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [visitors, setVisitors] = useState();
+
+    useEffect(() => {
+            const getVisitors = async () => {
+                try {
+                    const response = await api.get("/api/v1/visitors");
+                    setVisitors(response.data);
+                } catch (err) {
+                    console.log(err);
+                }
+            };
+            getVisitors();
+        },
+        []
+    );
+
+    return <div className="App">
+        <Routes>
+            <Route path="/" element={<Layout/>}>
+                <Route path="/" element={<Home/>}/>
+                <Route path="/visitors" element={<Visitors/>}/>
+            </Route>
+        </Routes>
+    </div>;
 }
 
 export default App;
