@@ -75,12 +75,12 @@ void loop() {
 
 void send_rfid_uid(const String rfid_uid) {
 
-        if (!http_client.begin(server_url + "/visit")) {
-                Serial.println("Could not start http_client client!");
+        if (!http_client.begin(server_url + "/api/v1/visit")) {
+                Serial.println("Could not start http client!");
         }
         http_client.addHeader("Content-Type", "application/json");
         DynamicJsonDocument visit(1024);
-        visit["rfidUid"] = rfid_uid;
+        visit["rfidUid"] = rfid_uid.toInt();
         String json;
         serializeJson(visit, json);
         int http_code = http_client.POST(json);
@@ -102,7 +102,6 @@ void send_rfid_uid(const String rfid_uid) {
 String get_rfid_uid_string(const byte* buffer, const byte bufferSize) {
         String result = "";
         for (byte i = 0; i < bufferSize; i++) {
-                result += buffer[i] < 0x10 ? " 0" : " ";
                 result += buffer[i];
         }
         return result;

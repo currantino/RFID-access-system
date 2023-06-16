@@ -25,13 +25,14 @@ public class CredentialService {
 
     @Transactional
     public CreateCredentialResponseDto createCredential(CreateCredentialDto createCredentialDto) {
-
         Credential credential = credentialMapper.toEntity(createCredentialDto);
+        credential.setBlocked(false);
         Credential savedCredential = credentialRepository.save(credential);
         if (createCredentialDto.owner() != null) {
             Visitor owner = Visitor.builder()
                     .email(createCredentialDto.owner().email())
                     .credential(savedCredential)
+                    .blocked(false)
                     .build();
             visitorRepository.save(owner);
         }

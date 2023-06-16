@@ -40,7 +40,7 @@ public class VisitService {
                 .credential(visitor.getCredential())
                 .visitDatetime(LocalDateTime.now())
                 .build();
-        if (visitor.isBlocked() || visitor.getCredential() == null || visitor.getCredential().isBlocked()) {
+        if ((visitor.isBlocked() == null || visitor.isBlocked()) || visitor.getCredential() == null || visitor.getCredential().isBlocked()) {
             visit.setPassed(false);
             log.info("""
                             Rfid uid: {}
@@ -48,7 +48,7 @@ public class VisitService {
                             FORBIDDEN
                             """,
                     createVisitDto.rfidUid(),
-                    visitor.getFullName());
+                    visitor.getEmail());
             throw new AccessDeniedException("You have no access to the wanted territory.");
         }
         visit.setPassed(true);

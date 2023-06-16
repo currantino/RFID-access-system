@@ -26,6 +26,7 @@ public class VisitorService {
 
     public UserDto createUser(CreateVisitorDto createVisitorDto) {
         Visitor visitor = userMapper.toEntity(createVisitorDto);
+        visitor.setBlocked(false);
         Visitor saved = visitorRepository.save(visitor);
         return userMapper.toDto(saved);
     }
