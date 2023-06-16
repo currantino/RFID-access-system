@@ -1,21 +1,21 @@
 package com.currantino.rfidserver.visitor.controller;
 
 import com.currantino.rfidserver.visitor.dto.CreateVisitorDto;
+import com.currantino.rfidserver.visitor.dto.UserDto;
 import com.currantino.rfidserver.visitor.service.VisitorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController("visitorController")
 @RequiredArgsConstructor
-@RequestMapping("/api/telegram/v1/visitors")
+@CrossOrigin(
+        origins = {"*"}
+)
+@RequestMapping("/api/v1/visitors")
 public class VisitorController {
     private final VisitorService visitorService;
 
@@ -36,20 +36,25 @@ public class VisitorController {
         return visitorService.getVisitorById(id);
     }
 
-    @PostMapping("/{email}/block")
-    public UserDto blockVisitor(
-            @PathVariable(name = "email")
-            String email
-    ){
-        return visitorService.blockUser(email);
+    @GetMapping
+    public List<UserDto> getVisitors() {
+        return visitorService.getVisitors();
     }
 
-    @PostMapping("/{email}/unblock")
+    @PostMapping("/{id}/block")
+    public UserDto blockVisitor(
+            @PathVariable(name = "id")
+            Long id
+    ) {
+        return visitorService.blockUser(id);
+    }
+
+    @PostMapping("/{id}/unblock")
     public UserDto unblockVisitor(
-            @PathVariable(name = "email")
-            String email
-    ){
-        return visitorService.unblockUser(email);
+            @PathVariable(name = "id")
+            Long id
+    ) {
+        return visitorService.unblockUser(id);
     }
 
     @GetMapping("/rfid/{rfidUid}")
@@ -58,6 +63,15 @@ public class VisitorController {
             Long rfidUid
     ) {
         return visitorService.getUserByCredentialRfidUid(rfidUid);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteVisitorById(
+            @PathVariable(name = "id")
+            Long id
+    ) {
+        visitorService.deleteVisitorById(id);
+        return ResponseEntity.noContent().build();
     }
 
 
