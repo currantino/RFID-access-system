@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/visit")
+@RequestMapping("api/v1/visit")
 @RequiredArgsConstructor
 public class VisitController {
 
@@ -33,7 +33,7 @@ public class VisitController {
                         PASSED
                         """,
                 createVisitDto.rfidUid(),
-                visitDto.visitor().fullName());
+                visitDto.visitor().email());
         return ResponseEntity.ok(visitDto);
     }
 
