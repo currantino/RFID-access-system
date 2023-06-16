@@ -2,6 +2,9 @@ import React, {useEffect, useState} from 'react';
 import Visitor from "./Visitor";
 import api from "../../api/axiosConfig";
 import {Link} from "react-router-dom";
+import Stack from '@mui/material/Stack';
+import {Divider} from "@mui/material";
+
 
 function isOk(response) {
     return response.status >= 200 && response.status < 400;
@@ -60,21 +63,21 @@ const Visitors = () => {
                 <Link to={"/visitors/add"} className={"btn m-2 badge-primary"}>Добавить пользователя</Link>
                 <main className="container">
                     {visitors ? (
-                        <ul>
+                        <Stack
+                            divider={<Divider orientation="horizontal" flexItem/>}
+                        >
                             {visitors.map((visitor) => (
-                                    <li key={visitor.id}>
-                                        <Visitor
-                                            visitor={visitor}
-                                            isBlocked={visitor.isBlocked}
-                                            onDelete={handleDelete}
-                                            onBlock={handleBlock}
-                                            onUnblock={handleUnblock}
-                                        >
-                                        </Visitor>
-                                    </li>
+                                    <Visitor
+                                        visitor={visitor}
+                                        isBlocked={visitor.isBlocked}
+                                        onDelete={handleDelete}
+                                        onBlock={handleBlock}
+                                        onUnblock={handleUnblock}
+                                    >
+                                    </Visitor>
                                 )
                             )}
-                        </ul>
+                        </Stack>
                     ) : (
                         <p>Loading data...</p>
                     )}

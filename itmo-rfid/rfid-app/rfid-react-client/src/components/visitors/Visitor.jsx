@@ -2,11 +2,11 @@ import React from 'react';
 import "bootstrap/dist/css/bootstrap.css";
 import {Button} from "react-bootstrap";
 
-const Visitor = ({visitor, onDelete, onBlock, onUnblock, isBlocked}) => {
+const Visitor = ({visitor, onDelete, onBlock, onUnblock}) => {
         return (
             <div>
                 <span>{visitor.email}</span>
-                {isBlocked ?
+                {visitor.isBlocked ?
                     <Button className="btn btn-secondary btn-sm m-2"
                             onClick={() => onUnblock(visitor.id)}>
                         Разблокировать
