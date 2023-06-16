@@ -1,6 +1,8 @@
 package com.currantino.rfidserver.visitor.service;
 
 import com.currantino.rfidserver.exception.UserNotFoundException;
+import com.currantino.rfidserver.visit.VisitMapper;
+import com.currantino.rfidserver.visit.repository.VisitRepository;
 import com.currantino.rfidserver.visitor.dto.CreateVisitorDto;
 import com.currantino.rfidserver.visitor.dto.UserDto;
 import com.currantino.rfidserver.visitor.entity.Visitor;
@@ -17,6 +19,8 @@ import java.util.List;
 public class VisitorService {
     private final VisitorRepository visitorRepository;
     private final UserMapper userMapper;
+    private final VisitRepository visitRepository;
+    private final VisitMapper visitMapper;
 
     public UserDto getVisitorById(Long id) {
         return userMapper.toDto(visitorRepository.findById(id)
@@ -60,6 +64,13 @@ public class VisitorService {
     public List<UserDto> getVisitors() {
         return visitorRepository.findAll().stream()
                 .map(userMapper::toDto)
+                .peek(user -> {
+                    List<LatestVisitDto> latestVisits = visitRepository
+                            .getLatestVisitsByVisitorId(user.getId()).stream()
+                            .map(visitMapper::toLatestVisitDto)
+                            .toList();
+                    user.setVisits(latestVisits);
+                })
                 .toList();
     }
 

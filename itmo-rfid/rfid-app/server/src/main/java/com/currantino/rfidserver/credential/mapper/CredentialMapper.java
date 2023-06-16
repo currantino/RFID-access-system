@@ -5,6 +5,7 @@ import com.currantino.rfidserver.credential.dto.CredentialDto;
 import com.currantino.rfidserver.credential.dto.CredentialUserDto;
 import com.currantino.rfidserver.credential.entity.Credential;
 import com.currantino.rfidserver.credential.service.CreateCredentialResponseDto;
+import com.currantino.rfidserver.visitor.dto.LatestVisitCredentialDto;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants.ComponentModel;
@@ -25,4 +26,6 @@ public interface CredentialMapper {
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Credential partialUpdate(CreateCredentialResponseDto createCredentialResponseDto, @MappingTarget Credential credential);
+
+    LatestVisitCredentialDto toLatestVisitDto(Credential credential);
 }
