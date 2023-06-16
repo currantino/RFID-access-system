@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Visitor from "./Visitor";
 import api from "../../api/axiosConfig";
+import {Link} from "react-router-dom";
 
 function isOk(response) {
     return response.status >= 200 && response.status < 400;
@@ -22,54 +23,62 @@ const Visitors = () => {
             },
             []
         );
-        const handleDelete = (id) => {
-            const deleted = api.delete(`/api/v1/visitors/${id}`);
+        const handleDelete = async (id) => {
+            const deleted = await api.delete(`/api/v1/visitors/${id}`);
             if (deleted) {
                 setVisitors((visitors) => visitors.filter((v) => v.id !== id));
             }
         };
-        const handleBlock = (id) => {
+        const handleBlock = async (id) => {
             console.log(`Blocking user with id ${id}`)
-            const response = api.post(`/api/v1/visitors/${id}/block`);
-            console.log(response);
+            const response = await api.post(`/api/v1/visitors/${id}/block`);
             if (isOk(response)) {
-                const visitors = [...visitors];
-                const index = visitors.findIndex((v) => v.id === id);
-                visitors[index].isBlocked = true;
-                setVisitors({visitors});
+                const updatedVisitors = visitors.map((v) => {
+                    if (v.id === id) {
+                        v.isBlocked = true;
+                    }
+                    return v;
+                });
+                setVisitors(updatedVisitors);
             }
         };
-        const handleUnblock = (id) => {
+        const handleUnblock = async (id) => {
             console.log(`Unblocking user with id ${id}`)
-            const response = api.post(`/api/v1/visitors/${id}/unblock`);
-            console.log(response);
+            const response = await api.post(`/api/v1/visitors/${id}/unblock`);
             if (isOk(response)) {
-                const visitors = [...visitors];
-                const index = visitors.findIndex((v) => v.id === id);
-                visitors[index].isBlocked = false;
-                setVisitors({visitors});
+                const updatedVisitors = visitors.map((v) => {
+                    if (v.id === id) {
+                        v.isBlocked = false;
+                    }
+                    return v;
+                });
+                setVisitors(updatedVisitors);
             }
         }
         return (
             <div>
-                {visitors ? (
-                    <ul>
-                        {visitors.map((visitor) => (
-                                <li key={visitor.id}>
-                                    <Visitor
-                                        visitor={visitor}
-                                        onDelete={handleDelete}
-                                        onBlock={handleBlock}
-                                        onUnblock={handleUnblock}>
-
-                                    </Visitor>
-                                </li>
-                            )
-                        )}
-                    </ul>
-                ) : (
-                    <p>Loading data...</p>
-                )}
+                <Link to={"/visitors/add"} className={"btn m-2 badge-primary"}>Добавить пользователя</Link>
+                <main className="container">
+                    {visitors ? (
+                        <ul>
+                            {visitors.map((visitor) => (
+                                    <li key={visitor.id}>
+                                        <Visitor
+                                            visitor={visitor}
+                                            isBlocked={visitor.isBlocked}
+                                            onDelete={handleDelete}
+                                            onBlock={handleBlock}
+                                            onUnblock={handleUnblock}
+                                        >
+                                        </Visitor>
+                                    </li>
+                                )
+                            )}
+                        </ul>
+                    ) : (
+                        <p>Loading data...</p>
+                    )}
+                </main>
             </div>
         );
     }
