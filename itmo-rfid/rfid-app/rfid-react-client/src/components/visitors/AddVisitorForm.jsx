@@ -18,10 +18,10 @@ const AddVisitorForm = () => {
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group controlId="email">
-                <Form.Label>Адрес электронной почты</Form.Label>
+                <Form.Label>Введите адрес электронной почты нового пользователя</Form.Label>
                 <Form.Control
                     type="email"
-                    placeholder="Введите адрес электронной почты нового пользователя."
+                    placeholder="johndoe@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required

@@ -40,7 +40,7 @@ public class VisitService {
                 .credential(visitor.getCredential())
                 .visitDatetime(LocalDateTime.now())
                 .build();
-        if (visitor.isBlocked() || visitor.getCredential().isBlocked()) {
+        if (visitor.isBlocked() || visitor.getCredential() == null || visitor.getCredential().isBlocked()) {
             visit.setPassed(false);
             log.info("""
                             Rfid uid: {}

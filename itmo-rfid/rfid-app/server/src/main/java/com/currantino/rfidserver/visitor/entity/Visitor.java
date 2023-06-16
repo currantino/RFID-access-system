@@ -2,8 +2,7 @@ package com.currantino.rfidserver.visitor.entity;
 
 import com.currantino.rfidserver.credential.entity.Credential;
 import com.currantino.rfidserver.visit.entity.Visit;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.apache.logging.log4j.util.Strings;
 
 import javax.persistence.*;
@@ -14,6 +13,9 @@ import java.util.List;
 @Table(name = "visitors")
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Visitor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

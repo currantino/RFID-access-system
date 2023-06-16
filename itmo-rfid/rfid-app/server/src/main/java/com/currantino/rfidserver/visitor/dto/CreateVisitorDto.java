@@ -5,7 +5,6 @@ import javax.validation.constraints.NotBlank;
 
 public record CreateVisitorDto(
         @Email
-        @NotBlank
         String email
 ) {
 }

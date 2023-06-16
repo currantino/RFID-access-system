@@ -13,6 +13,9 @@ import java.util.List;
 
 @RequestMapping("/api/v1/credentials")
 @RestController
+@CrossOrigin(
+        origins = {"*"}
+)
 @RequiredArgsConstructor
 public class CredentialController {
     private final CredentialService credentialService;
